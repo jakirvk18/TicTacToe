@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tic Tac Toe - Game</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css"
+        integrity="sha512-Evv84Mr4kqVGRNSgIGL/F/aIDqQb7xQ2vcrdIwxfjThSH8CSR7PBEakCr51Ck+w+/U6swU2Im1vVX0SVk9ABhg=="
+        crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <link rel="stylesheet" href="{{ url_for('static', filename='game.css') }}">
+</head>
+
+<body>
+    <div id="game">
+        <div class="container">
+            <h1>Tic Tac Toe</h1>
+            <div id="infos">
+
+                <div class="info" style="background-color: {{ 'red' if player_side == 'X' else 'blue' }}">
+                    You : {{ player_side }}
+                </div>
+
+                <div id="aiSide" class="info">
+                    AI :
+                </div>
+            </div>
+            <div id="status" class="status">Your turn!</div>
+            <div id="board" class="board"></div>
+
+        </div>
+    </div>
+    <br>
+    <div id="result-container" style="margin-top: 50vh; text-align: center; font-size: 1.5em; font-weight: bold;"></div>
+
+    <div class="controls">
+        <button id="resetButton" class="control">
+            <abbr title="Reset"> <i class="fa-solid fa-rotate-right"></i></abbr>
+        </button>
+        <a href="{{ url_for('index') }}" class="control">
+            <abbr title="Home"><i class="fa-solid fa-house"></i></abbr>
+        </a>
+        <a href="https://en.wikipedia.org/wiki/Tic-tac-toe" class="control">
+            <abbr title="info"><i class="fa-solid fa-circle-exclamation"></i></abbr>
+        </a>
+    </div>
+
+    <script>
+        let board = Array(9).fill(' ');
+        let player = "{{ player_side }}";
+        var ai;
+        if (player == "X") {
+            ai = "O";
+        }
+        else {
+            ai = "X";
+        }
+        let aiSide = document.getElementById('aiSide');
+        aiSide.innerHTML += ai;
+        if (ai == "O") {
+            aiSide.style.backgroundColor = 'blue';
+        }
+        else {
+            aiSide.style.backgroundColor = 'red';
+
+        }
+        console.log(ai);
+        let winner = null;
+        let winningCombo = [];
+        const boardElement = document.getElementById('board');
+        const statusElement = document.getElementById('status');
+        const resetButton = document.getElementById('resetButton');
+        const resultContainer = document.getElementById('result-container'); // Get the new result container
+
+        function updateBoard() {
+            boardElement.innerHTML = '';
+            board.forEach((cell, index) => {
+                const button = document.createElement('button');
+                button.className = 'cell';
+                button.innerText = cell;
+                button.disabled = cell !== ' ' || winner;
+
+                // Highlight winning cells
+                if (winningCombo.includes(index)) {
+                    button.classList.add('winner-cell');
+                }
+
+                button.style.color = cell === 'X' ? 'red' : (cell === 'O' ? 'blue' : 'black');
+                button.onclick = () => makeMove(index);
+                boardElement.appendChild(button);
+            });
+        }
+
+        async function makeMove(index) {
+            if (board[index] !== ' ' || winner) return;
+
+            statusElement.innerText = "AI is thinking...";
+            resultContainer.innerText = ''; // Clear any previous result
+
+            const response = await fetch(`/move/${index}`, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ board, player })
+            });
+
+            const data = await response.json();
+            board = data.board;
+            winner = data.winner;
+            winningCombo = data.winning_combo || [];
+
+            updateBoard();
+
+            if (winner) {
+                const winnerText = winner === player ? "You win!🎉🎉" : "AI wins!!😏";
+                resultContainer.innerText = winnerText;
+                statusElement.innerText = `${winner} wins!`;
+
+                const resultInfo = document.createElement('p');
+                resultInfo.className = 'result-info';
+                resultInfo.innerHTML = `
+                                <span>Scroll up for game results</span>
+                                <span class="bounce-arrow">⬆️</span>
+                `;
+                resultContainer.append(resultInfo);
+                resultContainer.style.display = 'block';
+                window.scrollBy({ top: 1000, left: 0, behavior: 'smooth' });// Keep status for immediate feedback
+            } else if (board.every(cell => cell !== ' ')) {
+                resultContainer.innerText = "It's a draw!";
+                statusElement.innerText = "It's a draw!";
+                const resultInfo = document.createElement('p');
+                resultInfo.className = 'result-info';
+                resultInfo.innerHTML = `
+                                <span>Scroll up for game results</span>
+                                <span class="bounce-arrow">⬆️</span>
+                `;
+                resultContainer.append(resultInfo);
+                resultContainer.style.display = 'block';
+                window.scrollBy({ top: 1000, left: 0, behavior: 'smooth' });
+                // Keep status for immediate feedback
+            } else {
+                statusElement.innerText = `Your turn (You are ${player})`;
+
+            }
+        }
+
+        resetButton.addEventListener('click', () => {
+            board = Array(9).fill(' ');
+            winner = null;
+            resultContainer.style.display = 'none';
+            winningCombo = [];
+            statusElement.innerText = `Your turn (You are ${player})`;
+            resultContainer.innerText = ''; // Clear the result on reset
+            updateBoard();
+        });
+
+        updateBoard();
+    </script>
+
+</body>
+
+</html>

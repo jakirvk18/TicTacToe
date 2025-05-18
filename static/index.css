@@ -1,0 +1,356 @@
+* {
+    padding: 0;
+    margin: 0;
+}
+
+body {
+    align-items: center;
+    display: flex;
+    justify-content: center;
+    height: 500px;
+    color: white;
+    background: radial-gradient(ellipse at center, #0b0b13 0%, #040408 100%);
+}
+
+
+
+footer {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  padding: 15px;
+  font-size: 1em;
+  text-align: center;
+  background-color: #2b2b2b;
+  /* Light gray footer */
+  color: #f8f2f2;
+  font-family: 'Kalam', cursive;
+}
+
+footer:hover {
+  color: #78edff;
+  font-weight: bold;
+  cursor: no-drop;
+  /* Indicate it's interactive (even if it isn't) */
+}
+
+#before{
+  display: flex;
+  justify-content: center;
+  align-items:center;
+  flex-direction: column;
+
+}
+/* From Uiverse.io by MuhammadHasann */ 
+.game-info{
+  border: 1px solid #2b2b2b;
+  height: auto;
+  width: 500px;
+  margin-top: 100px;
+  padding:15px 20px;
+  font-family:'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  border-radius: 5px;
+  font-size: 10px;
+  color: #2b2b2b;
+}
+.button {
+  --black-700: hsla(0 0% 12% / 1);
+  --border_radius: 9999px;
+  --transtion: 0.3s ease-in-out;
+  --offset: 2px;
+
+  cursor: pointer;
+  position: relative;
+  margin-top: 100px;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-weight: bolder;
+  transform-origin: center;
+  font-family: monospace;
+  padding: 1rem 2rem;
+  background-color: transparent;
+  width: 200px;
+  justify-content: center;
+  align-items: center;
+  border: none;
+  border-radius: var(--border_radius);
+  transform: scale(calc(1 + (var(--active, 0) * 0.1)));
+
+  transition: transform var(--transtion);
+}
+
+.button::before {
+  content: "";
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+
+  width: 100%;
+  height: 100%;
+  background-color: var(--black-700);
+
+  border-radius: var(--border_radius);
+  box-shadow: inset 0 0.5px hsl(0, 0%, 100%), inset 0 -1px 2px 0 hsl(0, 0%, 0%),
+    0px 4px 10px -4px hsla(0 0% 0% / calc(1 - var(--active, 0))),
+    0 0 0 calc(var(--active, 0) * 0.375rem) hsla(182, 100%, 79%, 0.75);
+  
+  transition: all var(--transtion);
+  z-index: 0;
+}
+
+.button::after {
+  content: "";
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  
+  width: 100%;
+  height: 100%;
+  background-color: hsla(185, 92%, 64%, 0.75);
+  background-image: radial-gradient(
+      at 51% 89%,
+      rgb(114, 114, 114) 0px,
+      transparent 50%
+    ),
+    radial-gradient(at 100% 100%, rgb(156, 156, 156) 0px, transparent 50%),
+    radial-gradient(at 22% 91%, rgb(200, 197, 197) 0px, transparent 50%);
+  background-position: top;
+
+  opacity: var(--active, 0);
+  border-radius: var(--border_radius);
+  transition: opacity var(--transtion);
+  z-index: 2;
+}
+
+.button:is(:hover, :focus-visible) {
+  --active: 0;
+
+}
+.button:active {
+  transform: scale(1);
+}
+
+.button .dots_border {
+  --size_border: calc(100% + 2px);
+
+  overflow: hidden;
+
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+
+  width: var(--size_border);
+  height: var(--size_border);
+  background-color: transparent;
+
+  border-radius: var(--border_radius);
+  z-index: -10;
+}
+.button:hover{
+  transform: scale(1.2);
+}
+
+.button .dots_border::before {
+  content: "";
+  position: absolute;
+  top: 30%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  transform-origin: left;
+  transform: rotate(0deg);
+
+  width: 100%;
+  height: 2rem;
+  background-color: white;
+
+  mask: linear-gradient(transparent 0%, white 120%);
+  animation: rotate 2s linear infinite;
+}
+
+@keyframes rotate {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.button .path {
+  fill: currentColor;
+  stroke: currentColor;
+
+  transform-origin: center;
+
+  color: hsl(0, 0%, 100%);
+}
+
+.button:is(:hover, :focus)  .path {
+  animation: path 1.5s linear 0.5s infinite;
+}
+
+.button  .path:nth-child(1) {
+  --scale_path_1: 1.2;
+}
+.button  .path:nth-child(2) {
+  --scale_path_2: 1.2;
+}
+.button .path:nth-child(3) {
+  --scale_path_3: 1.2;
+}
+
+@keyframes path {
+  0%,
+  34%,
+  71%,
+  100% {
+    transform: scale(1);
+  }
+  17% {
+    transform: scale(var(--scale_path_1, 1));
+  }
+  49% {
+    transform: scale(var(--scale_path_2, 1));
+  }
+  83% {
+    transform: scale(var(--scale_path_3, 1));
+  }
+}
+
+.button .text_button {
+  position: relative;
+  z-index: 10;
+
+  background-image: linear-gradient(
+    90deg,
+    hsla(0 0% 100% / 1) 0%,
+    hsla(0 0% 100% / var(--active, 0)) 120%
+  );
+  background-clip: text;
+
+  font-size: 1rem;
+  color: transparent;
+}
+.intro-text{
+  margin: 100px;
+}
+.typewriter h1 {
+  overflow: hidden; /* Ensures the content is not revealed until the animation */
+  border-right: .15em solid orange; /* The typwriter cursor */
+  white-space: nowrap; /* Keeps the content on a single line */
+  margin: 0 auto; /* Gives that scrolling effect as the typing happens */
+  letter-spacing: .15em; 
+  color: #eee; 
+  font-family: 'Orbitron', sans-serif; 
+  text-shadow: 0 0 10px #64ffda;/* Adjust as needed */
+  animation: 
+    typing 3.5s steps(40, end),
+    blink-caret .75s step-end infinite;
+}
+
+/* The typing effect */
+@keyframes typing {
+  from { width: 0 }
+  to { width: 100% }
+}
+
+/* The typewriter cursor effect */
+@keyframes blink-caret {
+  from, to { border-color: transparent }
+  50% { border-color: rgb(0, 170, 255); }
+}
+h1{
+    font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
+}
+
+
+
+#next{
+  display: none;
+}
+
+
+/* From Uiverse.io by cssbuttons-io */ 
+.playas {
+ width: 200px;
+ height: 70px;
+ cursor: pointer;
+ display: flex;
+ align-items: center;
+ background: hsla(0 0% 12% / 1);
+ border: none;
+ border-radius: 5px;
+ box-shadow: 1px 1px 3px rgba(0,0,0,0.15);
+ margin: 20px 30px;
+ font-size:larger ;
+
+}
+
+.playas, .playas span {
+ transition: 200ms;
+}
+
+.playas .text {
+ transform: translateX(35px);
+ color: white;
+ font-weight: bold;
+ font-family: monospace;
+ font-size: 20px;
+}
+
+.playas .icon {
+ position: absolute;
+ border-left: 1px solid #ffffff;
+ transform: translateX(140px);
+ height: 40px;
+ width: 50px;
+ display: flex;
+ align-items: center;
+ justify-content: center;
+ font-family: 'Kalam' , cursive;
+ font-size: large;
+ font-size: 30px;
+}
+
+#x .icon{
+  color: red;
+}
+#o .icon{
+  color: blue;
+}
+
+.playas:active{
+  border:none;
+}
+.playas:active .icon {
+  color: white !important;
+}
+
+.playas:hover .text {
+ color: transparent;
+}
+
+.playas:hover .icon {
+ width: 150px;
+ border-left: none;
+ transform: translateX(20px);
+ color: white;
+
+}
+.playas:focus {
+ outline: none;
+}
+#x:active{
+  background-color: red;
+}
+#o:active{
+  background-color: blue;
+}
+#buttons-div{
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: 100px;
+}

@@ -58,7 +58,7 @@ h1 {
     gap: 12px;
     width: 352px; /* 3 * 100px cell + 2 * 12px gap */
     padding: 12px;
-    background-color: #ffffff;
+    background-color: #000000;
     border-radius: 7px;
     box-shadow: 0 8px 16px rgba(0, 0, 0, 0.5);
     margin: auto;
@@ -66,7 +66,7 @@ h1 {
 }
 
 .cell {
-    background-color: #ffffff;
+    background-color: #1d1d1d;
     color: #ff4081;
     border: none;
     cursor: pointer;
@@ -81,14 +81,14 @@ h1 {
     justify-content: center;
     align-items: center;
     transition: transform 0.2s ease, background-color 0.3s ease, box-shadow 0.2s ease;
-    box-shadow: 2px 4px 0 #00000037;
+    box-shadow: 2px 4px 0 #88888837;
     user-select: none;
 }
 
 .cell:hover {
-    background-color: #00000013;
+    background-color: #83828213;
     transform: translateY(-4px) rotate(-2deg);
-    box-shadow: 4px 6px 0 #00000044;
+    box-shadow: 4px 6px 0 #a2a1a144;
 }
 
 .cell:focus {
